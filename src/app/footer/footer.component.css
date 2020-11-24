@@ -1,0 +1,12 @@
+.sticky {
+  position: fixed;
+  bottom: 0;
+}
+
+#aefefooter {
+  height: 2em;
+  padding: 0.5em;
+  background-color: #0f1f3d;
+  color: white;
+  text-align: center;
+}
