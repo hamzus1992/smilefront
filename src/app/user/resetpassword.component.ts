@@ -7,6 +7,8 @@ import {CrudserviceService} from '../service/crudservice.service';
 import {any} from 'codelyzer/util/function';
 import {Pays} from '../model/pays';
 import {Etablissement} from '../model/etablissement';
+import {Password} from '../model/password';
+import {UserserviceService} from '../service/userservice.service';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -34,9 +36,17 @@ export class ResetpasswordComponent implements OnInit{
   selectedZoneGeo = 0;
   selectedPays = 0;
   selectedEtablissement = 0;
+  token: string = '';
+  tokenExist = false;
   // tslint:disable-next-line:typedef
   ngOnInit() {
     this.refrech();
+    this.userservice.resetPassword(1).subscribe(
+      response => {
+        console.log(response);
+        this.token = response;
+      }
+    );
   }
   // tslint:disable-next-line:typedef
   refrech(){
@@ -48,7 +58,7 @@ export class ResetpasswordComponent implements OnInit{
       }
     );
   }
-  constructor(private formBuilder: FormBuilder, private crudService: CrudserviceService) {
+  constructor(private formBuilder: FormBuilder, private crudService: CrudserviceService, private userservice: UserserviceService) {
 
     this.myForm = this.formBuilder.group({
       password: ['', [Validators.required]],
@@ -89,5 +99,18 @@ export class ResetpasswordComponent implements OnInit{
 
     return pass === confirmPass ? null : { notSame: true };
   }
+  // tslint:disable-next-line:typedef
+  updatePassword(group: FormGroup){
+    const pass = group.controls.password.value;
+    const dateOfBirth = group.controls.dateOfBitrth.value;
+    let password: Password;
+    // tslint:disable-next-line:max-line-length
+    password = new Password(1, dateOfBirth, this.token, this.selectedZoneGeo, this.selectedPays, this.selectedEtablissement, pass);
+    this.userservice.updatePassword(password).subscribe(response => {
+      console.log(response);
+    });
+  }
+
+
 
 }
