@@ -36,7 +36,7 @@ export class ResetpasswordComponent implements OnInit{
   selectedZoneGeo = 0;
   selectedPays = 0;
   selectedEtablissement = 0;
-  token: string = '';
+  token = '';
   tokenExist = false;
   // tslint:disable-next-line:typedef
   ngOnInit() {
